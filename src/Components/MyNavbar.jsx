@@ -26,7 +26,7 @@ const MyNavbar = () => {
   const handleShow = () => setShow(true)
 
   const addProduct = async () => {
-    let url = `http://localhost:3001/products/`
+    let url = `${process.env.REACT_APP_URL}/products/`
     try {
       let res = await fetch(url, {
         method: "POST",
@@ -36,7 +36,7 @@ const MyNavbar = () => {
           imageUrl:
             type === "url"
               ? file
-              : `http://localhost:3001/file/products/${file.name}`,
+              : `${process.env.REACT_APP_URL}/products/${file.name}`,
           price: price,
           category: category,
           description: description,
@@ -54,7 +54,7 @@ const MyNavbar = () => {
   }
 
   const addImage = async (files) => {
-    let url = `http://localhost:3001/file/products/${name}`
+    let url = `${process.env.REACT_APP_URL}/file/products/${name}`
     var formData = new FormData()
     formData.append("image", files)
     // formData.append("test", "StringValueTest")
