@@ -54,7 +54,7 @@ const MyNavbar = () => {
   }
 
   const addImage = async (files) => {
-    let url = `${process.env.CLOUDINARY_URL}/file/cloudinary/${name}`
+    let url = `${process.env.REACT_APP_URL}/file/cloudinary/${name}`
     var formData = new FormData()
     formData.append("image", files)
     // formData.append("test", "StringValueTest")
