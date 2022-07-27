@@ -15,8 +15,10 @@ const MyNavbar = () => {
 
   const [name, setName] = useState("")
   const [brand, setBrand] = useState("")
-  const [type, setType] = useState(null)
+  //const [type, setType] = useState(null)
   const [file, setFile] = useState(null)
+  // const [image, setImage] = useState({})
+  //console.log(file)
 
   const [price, setPrice] = useState("")
   const [category, setCategory] = useState("")
@@ -27,16 +29,20 @@ const MyNavbar = () => {
 
   const addProduct = async () => {
     let url = `${process.env.REACT_APP_URL}/products/`
+    let imagePath = await addImage(file)
+    console.log(imagePath)
+
     try {
       let res = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
           name: name,
           brand: brand,
-          imageUrl:
-            type === "url"
-              ? file
-              : `${process.env.REACT_APP_URL}/cloudinary/${file.name}`,
+          imageUrl: imagePath.url,
+          // imageUrl:
+          //   type === "url"
+          //     ? file
+          //     : `${process.env.REACT_APP_URL}/file/cloudinary/${file.name}`,
           price: price,
           category: category,
           description: description,
@@ -53,12 +59,11 @@ const MyNavbar = () => {
     }
   }
 
-  const addImage = async (files) => {
-    let url = `${process.env.REACT_APP_URL}/file/cloudinary/${name}`
+  const addImage = async (str) => {
+    let url = `${process.env.REACT_APP_URL}/file/cloudinary`
     var formData = new FormData()
-    formData.append("image", files)
+    formData.append("image", str)
     // formData.append("test", "StringValueTest")
-
     var requestOptions = {
       method: "POST",
       body: formData,
@@ -66,7 +71,6 @@ const MyNavbar = () => {
       //   "Content-Type": "multipart/form-data",
       // },
     }
-
     try {
       let res = await fetch(url, requestOptions)
       let data = await res.json()
@@ -78,19 +82,18 @@ const MyNavbar = () => {
   }
 
   const handleSubmit = (e) => {
-    setName()
     addProduct()
-    if (type === "computer") {
-      addImage(file)
-    }
+    // if (type === "computer") {
+    //   addImage(file)
+    // }
 
     handleClose()
     e.preventDefault()
   }
 
   useEffect(() => {
-    // console.log(file.name)
-  }, [type, file])
+    //console.log(file.path)
+  })
   return (
     <Navbar bg='dark fixed-top' variant='dark'>
       <Container>
@@ -126,31 +129,31 @@ const MyNavbar = () => {
                 onChange={(e) => setBrand(e.target.value)}
               />
               <div className='d-flex col-6'>
-                <Form.Select
+                {/* <Form.Select
                   className='col-3'
                   aria-label='Default select example'
                   onChange={(e) => setType(e.target.value)}>
                   <option>Image</option>
                   <option value='url'>Url</option>
                   <option value='computer'>From your computer</option>
-                </Form.Select>
-                {type === "url" ? (
+                </Form.Select> */}
+                {/* {type === "url" ? (
                   <Form.Control
                     type='text'
                     placeholder='Image Url'
                     className='my-1 col-7'
                     onChange={(e) => setFile(e.target.value)}
                   />
-                ) : (
-                  <Form.Control
-                    type='file'
-                    placeholder='Image file'
-                    className='my-1 col-7'
-                    name='image'
-                    onChange={(e) => setFile(e.target.files[0])}
-                    //onChange={setImage}
-                  />
-                )}
+                ) : ( */}
+                <Form.Control
+                  type='file'
+                  placeholder='Image file'
+                  className='my-1 col-7'
+                  name='image'
+                  onChange={(e) => setFile(e.target.files[0])}
+                  //onChange={setImage}
+                />
+                {/* )} */}
               </div>
 
               <Form.Control
