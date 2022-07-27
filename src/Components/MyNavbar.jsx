@@ -36,7 +36,7 @@ const MyNavbar = () => {
           imageUrl:
             type === "url"
               ? file
-              : `${process.env.REACT_APP_URL}/products/${file.name}`,
+              : `${process.env.REACT_APP_URL}/cloudinary/${file.name}`,
           price: price,
           category: category,
           description: description,
@@ -54,7 +54,7 @@ const MyNavbar = () => {
   }
 
   const addImage = async (files) => {
-    let url = `${process.env.REACT_APP_URL}/file/products/${name}`
+    let url = `${process.env.CLOUDINARY_URL}/file/cloudinary/${name}`
     var formData = new FormData()
     formData.append("image", files)
     // formData.append("test", "StringValueTest")
