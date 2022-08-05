@@ -5,8 +5,8 @@ import SingleProduct from "./SingleProduct"
 import Container from "react-bootstrap/Container"
 
 const ProductList = () => {
-  const [products, setProducts] = useState([])
-  //console.log(products)
+  const [list, setList] = useState({})
+  //console.log(list)
   const getProducts = async () => {
     let url = `${process.env.REACT_APP_URL}/products`
     try {
@@ -19,7 +19,7 @@ const ProductList = () => {
   }
   useEffect(() => {
     getProducts().then((product) => {
-      setProducts(product)
+      setList(product)
       //console.log(post)
     })
 
@@ -29,9 +29,13 @@ const ProductList = () => {
     <Container
       className='d-flex flex-wrap justify-content-between'
       style={{ marginTop: "5rem" }}>
-      {products.map((product, i) => (
-        <SingleProduct key={i} product={product} />
-      ))}
+      {list.products ? (
+        list.products.map((product, i) => (
+          <SingleProduct key={i} product={product} />
+        ))
+      ) : (
+        <h4>Server Error</h4>
+      )}
     </Container>
   )
 }

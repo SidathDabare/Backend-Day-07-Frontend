@@ -27,7 +27,7 @@ const DetailsPage = () => {
   const handleShow = () => setShow(true)
 
   const editProduct = async () => {
-    let url = `${process.env.REACT_APP_URL}/products/${products.id}`
+    let url = `${process.env.REACT_APP_URL}/products/${products._id}`
     try {
       let res = await fetch(url, {
         method: "PUT",
@@ -50,8 +50,8 @@ const DetailsPage = () => {
       console.log(error)
     }
   }
-  const deleteProduct = async (reviewId) => {
-    let url = `${process.env.REACT_APP_URL}/products/${reviewId}`
+  const deleteProduct = async (productId) => {
+    let url = `${process.env.REACT_APP_URL}/products/${productId}`
     try {
       let res = await fetch(url, {
         method: "DELETE",
@@ -93,13 +93,13 @@ const DetailsPage = () => {
             <Button
               variant='danger'
               className='mx-2'
-              onClick={() => deleteProduct(products.id)}>
+              onClick={() => deleteProduct(products._id)}>
               <i className='bi bi-x-square-fill'></i> Delete Product
             </Button>
           </Card.Body>
         </Card>
         <Card className='d-flex flex-colum justify-content-between col-6'>
-          <ReviewsCompnents product_Id={products.id} />
+          <ReviewsCompnents productId={products._id} />
         </Card>
       </Container>
 

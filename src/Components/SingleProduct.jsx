@@ -9,7 +9,7 @@ import { useEffect } from "react"
 
 const SingleProduct = ({ product }) => {
   const [productItem, setProductItem] = useState({})
-  //   console.log(productItem)
+  //console.log(product._id)
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -40,7 +40,7 @@ const SingleProduct = ({ product }) => {
         <h3>$ {productItem.price}</h3>
         <Button
           onClick={() => {
-            navigate(`/details/${productItem.id}`, {
+            navigate(`/details/${productItem._id}`, {
               state: { productItem },
             })
           }}

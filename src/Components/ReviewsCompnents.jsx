@@ -3,28 +3,43 @@
 import React, { useEffect, useState } from "react"
 
 import Form from "react-bootstrap/Form"
+import ListGroup from "react-bootstrap/ListGroup"
 import Button from "react-bootstrap/Button"
 import Modal from "react-bootstrap/Modal"
 import SindleReview from "./SindleReview"
 
-const ReviewsCompnents = ({ product_Id }) => {
+const ReviewsCompnents = ({ productId }) => {
+  console.log(productId)
   const [comment, setComment] = useState("")
   const [rate, setRate] = useState("")
-
+  //console.log(productReviews)
   const [show, setShow] = useState(false)
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
+  const getReviews = async (product_Id) => {
+    let url = `${process.env.REACT_APP_URL}/products/${product_Id}`
+    try {
+      let res = await fetch(url)
+      let data = await res.json()
+      console.log(data.reviews)
+      // return data
+      //setReviews(data)
+      setComment(data.reviews)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const addReviews = async () => {
-    let url = `${process.env.REACT_APP_URL}/products/reviews`
+    let url = `${process.env.REACT_APP_URL}/reviews`
     try {
       let res = await fetch(url, {
         method: "POST",
         body: JSON.stringify({
           comment: comment,
           rate: rate,
-          productId: product_Id,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -44,18 +59,19 @@ const ReviewsCompnents = ({ product_Id }) => {
   }
 
   useEffect(() => {
+    getReviews(productId)
     //setProducts(location.state.productItem)
     // getReviews().then((review) => {
     //   //console.log(review)
     //   setReviews(review)
     // })
-  }, [product_Id])
+  }, [productId])
   return (
     <>
-      <SindleReview productId={product_Id} />
-      {/* <ListGroup>
-        {reviews && reviews.length > 0 ? (
-          reviews.map((review, i) => (
+      {/* <SindleReview productId={productId} /> */}
+      <ListGroup>
+        {comment && comment.length > 0 ? (
+          comment.map((review, i) => (
             <ListGroup.Item key={i} className='d-flex justify-content-between'>
               {" "}
               <span className='col-9'>{review.comment}</span>
@@ -72,7 +88,7 @@ const ReviewsCompnents = ({ product_Id }) => {
         ) : (
           <ListGroup.Item>No review</ListGroup.Item>
         )}
-      </ListGroup> */}
+      </ListGroup>
       <Button variant='primary' onClick={handleShow}>
         + Add Your Feedback
       </Button>

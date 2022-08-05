@@ -7,8 +7,10 @@ import Modal from "react-bootstrap/Modal"
 import Form from "react-bootstrap/Form"
 
 const SindleReview = ({ productId }) => {
-  const [reviews, setReviews] = useState([])
+  const [reviews, setReviews] = useState(null)
   const [show, setShow] = useState(false)
+  console.log(productId)
+  // console.log(reviews)
 
   const [comment, setComment] = useState("")
   const [rate, setRate] = useState("")
@@ -16,26 +18,26 @@ const SindleReview = ({ productId }) => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
-  const getReviews = async () => {
-    let url = `${process.env.REACT_APP_URL}/products/reviews/${productId}`
-    try {
-      let res = await fetch(url)
-      let data = await res.json()
-      //console.log(data)
-      return data
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const getReviews = async () => {
+  //   let url = `${process.env.REACT_APP_URL}/products/${product_Id}`
+  //   try {
+  //     let res = await fetch(url)
+  //     let data = await res.json()
+  //     console.log(data)
+  //     return data
+  //     //setReviews(data)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
   const editReviews = async (reviewId) => {
-    let url = `${process.env.REACT_APP_URL}/products/reviews/${reviewId}`
+    let url = `${process.env.REACT_APP_URL}/reviews/${reviewId}`
     try {
       let res = await fetch(url, {
         method: "PUT",
         body: JSON.stringify({
           comment: comment,
           rate: rate,
-          productId: productId,
         }),
         headers: {
           "Content-Type": "application/json",
@@ -49,7 +51,7 @@ const SindleReview = ({ productId }) => {
     }
   }
   const deleteReviews = async (reviewId) => {
-    let url = `${process.env.REACT_APP_URL}/products/reviews/${reviewId}`
+    let url = `${process.env.REACT_APP_URL}/reviews/${reviewId}`
     try {
       let res = await fetch(url, {
         method: "DELETE",
@@ -61,25 +63,19 @@ const SindleReview = ({ productId }) => {
       console.log(error)
     }
   }
-  //   const handleSubmit = (e, id) => {
-  //     e.preventDefault()
-  //     editReviews(id)
-  //     handleClose()
-  //     return id
-  //   }
 
   useEffect(() => {
     //setProducts(location.state.productItem)
-    getReviews().then((review) => {
-      //console.log(review)
-      setReviews(review)
-    })
+    //getReviews().then((review) => {
+    //console.log(review)
+    //setReviews(review)
+    // })
   }, [productId])
   return (
     <>
       <ListGroup>
-        {reviews && reviews.length > 0 ? (
-          reviews.map((review, i) => (
+        {productId && productId.length > 0 ? (
+          productId.map((review, i) => (
             <ListGroup.Item key={i} className='d-flex justify-content-between'>
               {" "}
               <span className='col-9'>{review.comment}</span>
