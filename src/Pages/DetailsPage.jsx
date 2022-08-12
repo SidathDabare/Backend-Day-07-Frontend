@@ -113,7 +113,7 @@ const DetailsPage = () => {
             </Button>
           </Card.Body>
         </Card>
-        <Card className='d-flex flex-colum justify-content-between col-6'>
+        <Card className='d-flex flex-colum col-6'>
           <ReviewsCompnents product_Id={productId} />
         </Card>
       </Container>

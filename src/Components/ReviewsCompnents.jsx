@@ -12,46 +12,45 @@ const ReviewsCompnents = ({ product_Id }) => {
   const [comment, setComment] = useState("")
   const [rate, setRate] = useState("")
   const [show, setShow] = useState(false)
-  const [reviewId, setReviewId] = useState({})
-  console.log(reviewId)
+  const [reviews, setReviews] = useState([])
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
   const getReviews = async () => {
-    let url = `${process.env.REACT_APP_URL}/products/${product_Id}`
+    let url = `${process.env.REACT_APP_URL}/products/${product_Id}/reviews`
     try {
       let res = await fetch(url)
       let data = await res.json()
-      //console.log(data)
-      return data
+      console.log(data.reviews)
+      return data.reviews
       //setReviews(data)
     } catch (error) {
       console.log(error)
     }
   }
-  const updateReviews = async () => {
-    let url = `${process.env.REACT_APP_URL}/products/${product_Id}`
-    try {
-      let res = await fetch(url, {
-        method: "PUT",
-        body: JSON.stringify({
-          reviews: [...reviewId],
-        }),
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      let data = await res.json()
-      console.log(data)
-      return data
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const updateReviews = async () => {
+  //   let url = `${process.env.REACT_APP_URL}/products/${product_Id}`
+  //   try {
+  //     let res = await fetch(url, {
+  //       method: "PUT",
+  //       body: JSON.stringify({
+  //         reviews: [...reviewId],
+  //       }),
+  //       headers: {
+  //         "Content-Type": "application/json",
+  //       },
+  //     })
+  //     let data = await res.json()
+  //     console.log(data)
+  //     return data
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   const addReviews = async () => {
-    let url = `${process.env.REACT_APP_URL}/reviews`
+    let url = `${process.env.REACT_APP_URL}/products/${product_Id}/reviews`
     try {
       let res = await fetch(url, {
         method: "POST",
@@ -65,8 +64,8 @@ const ReviewsCompnents = ({ product_Id }) => {
       })
       let data = await res.json()
       // console.log(data)
-      // return data
-      setReviewId(data)
+      return data
+      //setReviewId(data)
     } catch (error) {
       console.log(error)
     }
@@ -81,35 +80,19 @@ const ReviewsCompnents = ({ product_Id }) => {
     //getReviews(product_Id)
     //setProducts(location.state.productItem)
     getReviews().then((reviews) => {
-      setComment(reviews)
+      setReviews(reviews)
     })
-    updateReviews().then((reviewID) => {
-      setReviewId(reviewID)
-    })
+    // updateReviews().then((reviewID) => {
+    //   setReviewId(reviewID)
+    // })
   }, [product_Id])
   return (
     <>
-      {/* <SindleReview productId={productId} /> */}
-      <ListGroup>
-        {comment.reviews && comment.reviews.length > 0 ? (
-          comment.reviews.map((review, i) => (
-            <ListGroup.Item key={i} className='d-flex justify-content-between'>
-              {" "}
-              <span className='col-9'>{review.comment}</span>
-              <span className='col-3 d-flex justify-content-end'>
-                <i
-                  className='bi bi-pencil-square mx-2'
-                  onClick={() => console.log("Edit")}></i>
-                <i
-                  className='bi bi-x-square-fill text-danger'
-                  onClick={() => console.log("Delete")}></i>
-              </span>
-            </ListGroup.Item>
-          ))
-        ) : (
-          <ListGroup.Item>No review</ListGroup.Item>
-        )}
-      </ListGroup>
+      {reviews &&
+        reviews.map((review, i) => (
+          <SingleReview key={i} productId={product_Id} review={review} />
+        ))}
+
       <Button variant='primary' onClick={handleShow}>
         + Add Your Feedback
       </Button>
