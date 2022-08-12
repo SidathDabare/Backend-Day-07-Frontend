@@ -7,10 +7,8 @@ import Modal from "react-bootstrap/Modal"
 import Form from "react-bootstrap/Form"
 
 const SingleReview = ({ productId, review }) => {
-  const [reviews, setReviews] = useState(review)
+  const [reviews, setReviews] = useState(null)
   const [show, setShow] = useState(false)
-  //console.log(productId)
-  // console.log(reviews)
 
   const [comment, setComment] = useState("")
   const [rate, setRate] = useState("")
@@ -45,7 +43,8 @@ const SingleReview = ({ productId, review }) => {
       })
       let data = await res.json()
       console.log(data)
-      //getReviews()
+      //getReviews().then((reviews) => setReviews(reviews))
+      getReviews()
       return data
     } catch (error) {
       console.log(error)
@@ -59,7 +58,7 @@ const SingleReview = ({ productId, review }) => {
       })
       let data = await res.json()
       console.log(data)
-
+      getReviews()
       return data
     } catch (error) {
       console.log(error)

@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from "react"
 
 import Form from "react-bootstrap/Form"
-import ListGroup from "react-bootstrap/ListGroup"
 import Button from "react-bootstrap/Button"
 import Modal from "react-bootstrap/Modal"
 import SingleReview from "./SingleReview"
@@ -11,9 +10,9 @@ import SingleReview from "./SingleReview"
 const ReviewsCompnents = ({ product_Id }) => {
   const [comment, setComment] = useState("")
   const [rate, setRate] = useState("")
-  const [show, setShow] = useState(false)
-  const [reviews, setReviews] = useState([])
+  const [reviews, setReviews] = useState(null)
 
+  const [show, setShow] = useState(false)
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
@@ -22,9 +21,9 @@ const ReviewsCompnents = ({ product_Id }) => {
     try {
       let res = await fetch(url)
       let data = await res.json()
-      console.log(data.reviews)
-      return data.reviews
-      //setReviews(data)
+      //console.log(data.reviews)
+      //return data.reviews
+      setReviews(data.reviews)
     } catch (error) {
       console.log(error)
     }
@@ -63,9 +62,9 @@ const ReviewsCompnents = ({ product_Id }) => {
         },
       })
       let data = await res.json()
-      // console.log(data)
+      console.log(data)
+      getReviews()
       return data
-      //setReviewId(data)
     } catch (error) {
       console.log(error)
     }
@@ -77,21 +76,19 @@ const ReviewsCompnents = ({ product_Id }) => {
   }
 
   useEffect(() => {
-    //getReviews(product_Id)
-    //setProducts(location.state.productItem)
-    getReviews().then((reviews) => {
-      setReviews(reviews)
-    })
-    // updateReviews().then((reviewID) => {
-    //   setReviewId(reviewID)
-    // })
+    getReviews()
+
+    //getReviews().then((reviews) => setReviews(reviews))
   }, [product_Id])
   return (
     <>
-      {reviews &&
+      {reviews ? (
         reviews.map((review, i) => (
           <SingleReview key={i} productId={product_Id} review={review} />
-        ))}
+        ))
+      ) : (
+        <h3>No Reviews</h3>
+      )}
 
       <Button variant='primary' onClick={handleShow}>
         + Add Your Feedback
