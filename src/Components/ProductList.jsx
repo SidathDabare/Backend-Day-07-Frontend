@@ -24,7 +24,7 @@ const ProductList = () => {
     })
 
     //console.log(posts)
-  }, [])
+  })
   return (
     <Container
       className='d-flex flex-wrap justify-content-between'

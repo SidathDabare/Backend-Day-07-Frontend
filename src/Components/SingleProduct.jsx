@@ -40,9 +40,7 @@ const SingleProduct = ({ product }) => {
         <h3>$ {productItem.price}</h3>
         <Button
           onClick={() => {
-            navigate(`/details/${productItem._id}`, {
-              state: { productItem },
-            })
+            navigate(`/details/${productItem._id}`)
           }}
           variant='primary'>
           Product Details

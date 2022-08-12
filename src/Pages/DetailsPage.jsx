@@ -1,10 +1,9 @@
 /** @format */
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import MyNavbar from "../Components/MyNavbar"
 import Container from "react-bootstrap/Container"
-import { useEffect } from "react"
-import { useLocation } from "react-router-dom"
+import { useParams } from "react-router-dom"
 import Card from "react-bootstrap/Card"
 import Button from "react-bootstrap/Button"
 import Modal from "react-bootstrap/Modal"
@@ -13,7 +12,7 @@ import ReviewsCompnents from "../Components/ReviewsCompnents"
 
 const DetailsPage = () => {
   const [products, setProducts] = useState({})
-  const location = useLocation()
+  let { productId } = useParams()
 
   const [name, setName] = useState("")
   const [brand, setBrand] = useState("")
@@ -26,8 +25,21 @@ const DetailsPage = () => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
+  const getProducts = async () => {
+    let url = `${process.env.REACT_APP_URL}/products/${productId}`
+    try {
+      let res = await fetch(url)
+      let data = await res.json()
+      //console.log(data)
+      return data
+      //setReviews(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const editProduct = async () => {
-    let url = `${process.env.REACT_APP_URL}/products/${products._id}`
+    let url = `${process.env.REACT_APP_URL}/products/${productId}`
     try {
       let res = await fetch(url, {
         method: "PUT",
@@ -50,7 +62,7 @@ const DetailsPage = () => {
       console.log(error)
     }
   }
-  const deleteProduct = async (productId) => {
+  const deleteProduct = async () => {
     let url = `${process.env.REACT_APP_URL}/products/${productId}`
     try {
       let res = await fetch(url, {
@@ -70,8 +82,11 @@ const DetailsPage = () => {
   }
 
   useEffect(() => {
-    setProducts(location.state.productItem)
-  }, [location.state.productItem])
+    getProducts().then((product) => {
+      setProducts(product)
+      //console.log(post)
+    })
+  }, [productId])
   return (
     <div>
       <MyNavbar />
@@ -93,13 +108,13 @@ const DetailsPage = () => {
             <Button
               variant='danger'
               className='mx-2'
-              onClick={() => deleteProduct(products._id)}>
+              onClick={() => deleteProduct()}>
               <i className='bi bi-x-square-fill'></i> Delete Product
             </Button>
           </Card.Body>
         </Card>
         <Card className='d-flex flex-colum justify-content-between col-6'>
-          <ReviewsCompnents productId={products._id} />
+          <ReviewsCompnents product_Id={productId} />
         </Card>
       </Container>
 

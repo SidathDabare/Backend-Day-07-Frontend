@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button"
 import Modal from "react-bootstrap/Modal"
 import Form from "react-bootstrap/Form"
 
-const SindleReview = ({ productId }) => {
+const SingleReview = ({ productId }) => {
   const [reviews, setReviews] = useState(null)
   const [show, setShow] = useState(false)
   console.log(productId)
@@ -149,4 +149,4 @@ const SindleReview = ({ productId }) => {
   )
 }
 
-export default SindleReview
+export default SingleReview

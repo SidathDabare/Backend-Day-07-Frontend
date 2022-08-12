@@ -6,27 +6,45 @@ import Form from "react-bootstrap/Form"
 import ListGroup from "react-bootstrap/ListGroup"
 import Button from "react-bootstrap/Button"
 import Modal from "react-bootstrap/Modal"
-import SindleReview from "./SindleReview"
+import SingleReview from "./SingleReview"
 
-const ReviewsCompnents = ({ productId }) => {
-  console.log(productId)
+const ReviewsCompnents = ({ product_Id }) => {
   const [comment, setComment] = useState("")
   const [rate, setRate] = useState("")
-  //console.log(productReviews)
   const [show, setShow] = useState(false)
+  const [reviewId, setReviewId] = useState({})
+  console.log(reviewId)
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
-  const getReviews = async (product_Id) => {
+  const getReviews = async () => {
     let url = `${process.env.REACT_APP_URL}/products/${product_Id}`
     try {
       let res = await fetch(url)
       let data = await res.json()
-      console.log(data.reviews)
-      // return data
+      //console.log(data)
+      return data
       //setReviews(data)
-      setComment(data.reviews)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const updateReviews = async () => {
+    let url = `${process.env.REACT_APP_URL}/products/${product_Id}`
+    try {
+      let res = await fetch(url, {
+        method: "PUT",
+        body: JSON.stringify({
+          reviews: [...reviewId],
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      let data = await res.json()
+      console.log(data)
+      return data
     } catch (error) {
       console.log(error)
     }
@@ -46,8 +64,9 @@ const ReviewsCompnents = ({ productId }) => {
         },
       })
       let data = await res.json()
-      console.log(data)
-      return data
+      // console.log(data)
+      // return data
+      setReviewId(data)
     } catch (error) {
       console.log(error)
     }
@@ -59,19 +78,21 @@ const ReviewsCompnents = ({ productId }) => {
   }
 
   useEffect(() => {
-    getReviews(productId)
+    //getReviews(product_Id)
     //setProducts(location.state.productItem)
-    // getReviews().then((review) => {
-    //   //console.log(review)
-    //   setReviews(review)
-    // })
-  }, [productId])
+    getReviews().then((reviews) => {
+      setComment(reviews)
+    })
+    updateReviews().then((reviewID) => {
+      setReviewId(reviewID)
+    })
+  }, [product_Id])
   return (
     <>
       {/* <SindleReview productId={productId} /> */}
       <ListGroup>
-        {comment && comment.length > 0 ? (
-          comment.map((review, i) => (
+        {comment.reviews && comment.reviews.length > 0 ? (
+          comment.reviews.map((review, i) => (
             <ListGroup.Item key={i} className='d-flex justify-content-between'>
               {" "}
               <span className='col-9'>{review.comment}</span>
