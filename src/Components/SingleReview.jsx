@@ -24,8 +24,8 @@ const SingleReview = ({ productId, review }) => {
       let res = await fetch(url)
       let data = await res.json()
       //console.log(data)
-      return data.reviews
-      //setReviews(data)
+      //return data.reviews
+      setReviews(data.reviews)
     } catch (error) {
       console.log(error)
     }
@@ -66,20 +66,15 @@ const SingleReview = ({ productId, review }) => {
     }
   }
 
-  useEffect(
-    (prevProps, prevState) => {
-      //setProducts(location.state.productItem)
-      if (prevProps !== this.props.movieTitle) {
-        // oh, we have detected a change in the prop movieTitle!
-        getReviews().then((review) => {
-          //console.log(review)
-          setReviews(review)
-        })
-        //   this will NOT performed again when a state change happens... :)
-      }
-    },
-    [productId]
-  )
+  useEffect(() => {
+    getReviews()
+  }, [productId])
+  // useEffect(() => {
+  //   getReviews().then((review) => {
+  //     //console.log(review)
+  //     setReviews(review)
+  //   })
+  // }, [productId])
   return (
     <>
       <ListGroup>
