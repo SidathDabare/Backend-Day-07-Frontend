@@ -34,7 +34,7 @@ const ProductList = () => {
           <SingleProduct key={i} product={product} />
         ))
       ) : (
-        <h4>Server Error</h4>
+        <h4>Loading.....</h4>
       )}
     </Container>
   )

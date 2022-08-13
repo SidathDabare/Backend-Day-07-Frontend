@@ -45,7 +45,7 @@ const SingleReview = ({ productId, review }) => {
       console.log(data)
       //getReviews().then((reviews) => setReviews(reviews))
       getReviews()
-      return data
+      //return data
     } catch (error) {
       console.log(error)
     }
@@ -67,7 +67,7 @@ const SingleReview = ({ productId, review }) => {
 
   useEffect(() => {
     getReviews()
-  }, [productId])
+  }, [productId, review])
   // useEffect(() => {
   //   getReviews().then((review) => {
   //     //console.log(review)
