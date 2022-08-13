@@ -84,7 +84,12 @@ const ReviewsCompnents = ({ product_Id }) => {
     <>
       {reviews ? (
         reviews.map((review, i) => (
-          <SingleReview key={i} productId={product_Id} review={review} />
+          <SingleReview
+            key={i}
+            productId={product_Id}
+            review={review}
+            getReviews={getReviews}
+          />
         ))
       ) : (
         <h3>No Reviews</h3>

@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button"
 import Modal from "react-bootstrap/Modal"
 import Form from "react-bootstrap/Form"
 
-const SingleReview = ({ productId, review }) => {
+const SingleReview = ({ productId, review, getReviews }) => {
   const [reviews, setReviews] = useState(null)
   const [show, setShow] = useState(false)
 
@@ -16,18 +16,18 @@ const SingleReview = ({ productId, review }) => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
-  const getReviews = async () => {
-    let url = `${process.env.REACT_APP_URL}/products/${productId}/reviews`
-    try {
-      let res = await fetch(url)
-      let data = await res.json()
-      //console.log(data)
-      //return data.reviews
-      setReviews(data.reviews)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const getReviews = async () => {
+  //   let url = `${process.env.REACT_APP_URL}/products/${productId}/reviews`
+  //   try {
+  //     let res = await fetch(url)
+  //     let data = await res.json()
+  //     //console.log(data)
+  //     //return data.reviews
+  //     setReviews(data.reviews)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
   const editReviews = async (reviewId) => {
     let url = `${process.env.REACT_APP_URL}/products/reviews/${reviewId}`
     try {
@@ -44,7 +44,7 @@ const SingleReview = ({ productId, review }) => {
       let data = await res.json()
       console.log(data)
       //getReviews().then((reviews) => setReviews(reviews))
-      getReviews()
+      //getReviews()
       //return data
     } catch (error) {
       console.log(error)
@@ -58,16 +58,16 @@ const SingleReview = ({ productId, review }) => {
       })
       let data = await res.json()
       console.log(data)
-      getReviews()
-      return data
+      //getReviews()
+      //return data
     } catch (error) {
       console.log(error)
     }
   }
 
   useEffect(() => {
-    getReviews()
-  }, [productId, review])
+    setReviews(getReviews())
+  }, [productId])
   // useEffect(() => {
   //   getReviews().then((review) => {
   //     //console.log(review)
@@ -77,7 +77,7 @@ const SingleReview = ({ productId, review }) => {
   return (
     <>
       <ListGroup>
-        {reviews ? (
+        {reviews !== "" ? (
           <ListGroup.Item className='d-flex justify-content-between'>
             {" "}
             <span className='col-9'>{review.comment}</span>
@@ -89,9 +89,11 @@ const SingleReview = ({ productId, review }) => {
                 }}></i>
               <i
                 className='bi bi-x-square-fill text-danger'
-                onClick={() => {
+                onClick={(e) => {
+                  e.preventDefault()
+                  console.log(review._id)
                   deleteReviews(review._id)
-                  // getReviews().then((review) => setReviews(review))
+                  getReviews().then((reviews) => setReviews(reviews))
                 }}></i>
             </span>
             <Modal show={show} onHide={handleClose}>
@@ -138,7 +140,7 @@ const SingleReview = ({ productId, review }) => {
                     e.preventDefault()
                     console.log(review._id)
                     editReviews(review._id)
-                    getReviews().then((review) => setReviews(review))
+                    getReviews()
                     handleClose()
                   }}>
                   Save Changes

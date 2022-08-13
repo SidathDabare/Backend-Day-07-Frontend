@@ -4,33 +4,42 @@ import React, { useEffect, useState } from "react"
 import SingleProduct from "./SingleProduct"
 import Container from "react-bootstrap/Container"
 
-const ProductList = () => {
-  const [list, setList] = useState({})
-  //console.log(list)
-  const getProducts = async () => {
-    let url = `${process.env.REACT_APP_URL}/products`
-    try {
-      let res = await fetch(url)
-      let data = await res.json()
-      return data
-    } catch (error) {
-      console.log(error)
-    }
-  }
-  useEffect(() => {
-    getProducts().then((product) => {
-      setList(product)
-      //console.log(post)
-    })
+const ProductList = ({ products }) => {
+  const [items, setItems] = useState([])
+  console.log(items)
 
-    //console.log(posts)
-  })
+  console.log(products)
+  // const getProducts = async () => {
+  //   let url = `${process.env.REACT_APP_URL}/products`
+  //   try {
+  //     let res = await fetch(url)
+  //     let data = await res.json()
+  //     console.log(data.products)
+  //     return data.products
+  //     //setList(data.products)
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
+  // useEffect(() => {
+  //   //getProducts()
+  //   getProducts().then((product) => {
+  //     setProducts(product)
+  //   })
+
+  //   //console.log(posts)
+  // }, [])
+  useEffect(() => {
+    //setItems(products)
+    //console.log(products)
+  }, [products])
+
   return (
     <Container
       className='d-flex flex-wrap justify-content-between'
       style={{ marginTop: "5rem" }}>
-      {list.products ? (
-        list.products.map((product, i) => (
+      {products ? (
+        products.map((product, i) => (
           <SingleProduct key={i} product={product} />
         ))
       ) : (

@@ -10,7 +10,7 @@ import Form from "react-bootstrap/Form"
 import Navbar from "react-bootstrap/Navbar"
 import { useEffect } from "react"
 
-const MyNavbar = () => {
+const MyNavbar = ({ setProducts }) => {
   const [show, setShow] = useState(false)
 
   const [name, setName] = useState("")
@@ -53,6 +53,7 @@ const MyNavbar = () => {
       })
       let data = await res.json()
       console.log(data)
+      setProducts()
       return data
     } catch (error) {
       console.log(error)
@@ -75,6 +76,7 @@ const MyNavbar = () => {
       let res = await fetch(url, requestOptions)
       let data = await res.json()
       console.log(data)
+
       return data
     } catch (error) {
       console.log(error)
@@ -92,8 +94,9 @@ const MyNavbar = () => {
   }
 
   useEffect(() => {
+    setProducts()
     //console.log(file.path)
-  })
+  }, [])
   return (
     <Navbar bg='dark fixed-top' variant='dark'>
       <Container>
@@ -169,7 +172,7 @@ const MyNavbar = () => {
                 className='my-1'
                 onChange={(e) => setCategory(e.target.value)}>
                 <option>Open this select menu</option>
-                <option value='Electronics'>Electronics</option>
+                <option value='electronics'>Electronics</option>
                 <option value='2'>Two</option>
                 <option value='3'>Three</option>
               </Form.Select>
