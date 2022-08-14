@@ -88,7 +88,7 @@ const ReviewsCompnents = ({ product_Id }) => {
             key={i}
             productId={product_Id}
             review={review}
-            getReviews={getReviews}
+            setUpdateReviews={getReviews}
           />
         ))
       ) : (

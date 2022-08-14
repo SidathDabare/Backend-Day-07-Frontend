@@ -5,22 +5,21 @@ import SingleProduct from "./SingleProduct"
 import Container from "react-bootstrap/Container"
 
 const ProductList = ({ products }) => {
-  const [items, setItems] = useState(null)
+  const [items, setItems] = useState(products)
   //console.log(items)
 
   //console.log(products)
-  // const getProducts = async () => {
-  //   let url = `${process.env.REACT_APP_URL}/products`
-  //   try {
-  //     let res = await fetch(url)
-  //     let data = await res.json()
-  //     console.log(data.products)
-  //     return data.products
-  //     //setList(data.products)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
+  const getProducts = async () => {
+    let url = `${process.env.REACT_APP_URL}/products`
+    try {
+      let res = await fetch(url)
+      let data = await res.json()
+      //console.log(data.products)
+      setItems(data.products)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   // useEffect(() => {
   //   //getProducts()
   //   getProducts().then((product) => {
@@ -31,8 +30,10 @@ const ProductList = ({ products }) => {
   // }, [])
   useEffect(() => {
     setItems(products)
-    console.log(items)
-  }, [products, items])
+    getProducts()
+
+    //console.log(items)
+  }, [products])
 
   return (
     <Container

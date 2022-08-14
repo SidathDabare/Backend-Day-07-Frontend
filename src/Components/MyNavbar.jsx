@@ -12,13 +12,11 @@ import { useEffect } from "react"
 
 const MyNavbar = ({ setProducts }) => {
   const [show, setShow] = useState(false)
-
   const [name, setName] = useState("")
   const [brand, setBrand] = useState("")
   //const [type, setType] = useState(null)
   const [file, setFile] = useState(null)
   // const [image, setImage] = useState({})
-  //console.log(file)
 
   const [price, setPrice] = useState("")
   const [category, setCategory] = useState("")

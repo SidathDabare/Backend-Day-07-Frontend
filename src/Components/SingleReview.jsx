@@ -6,7 +6,7 @@ import Button from "react-bootstrap/Button"
 import Modal from "react-bootstrap/Modal"
 import Form from "react-bootstrap/Form"
 
-const SingleReview = ({ productId, review, getReviews }) => {
+const SingleReview = ({ productId, review, setUpdateReviews }) => {
   const [reviews, setReviews] = useState(null)
   const [show, setShow] = useState(false)
 
@@ -16,18 +16,18 @@ const SingleReview = ({ productId, review, getReviews }) => {
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
 
-  // const getReviews = async () => {
-  //   let url = `${process.env.REACT_APP_URL}/products/${productId}/reviews`
-  //   try {
-  //     let res = await fetch(url)
-  //     let data = await res.json()
-  //     //console.log(data)
-  //     //return data.reviews
-  //     setReviews(data.reviews)
-  //   } catch (error) {
-  //     console.log(error)
-  //   }
-  // }
+  const getReviews = async () => {
+    let url = `${process.env.REACT_APP_URL}/products/${productId}/reviews`
+    try {
+      let res = await fetch(url)
+      let data = await res.json()
+      //console.log(data)
+      //return data.reviews
+      setReviews(data.reviews)
+    } catch (error) {
+      console.log(error)
+    }
+  }
   const editReviews = async (reviewId) => {
     let url = `${process.env.REACT_APP_URL}/products/reviews/${reviewId}`
     try {
@@ -56,9 +56,11 @@ const SingleReview = ({ productId, review, getReviews }) => {
       let res = await fetch(url, {
         method: "DELETE",
       })
+      getReviews()
+      setUpdateReviews()
       let data = await res.json()
       console.log(data)
-      //getReviews()
+      //await getReviews()
       //return data
     } catch (error) {
       console.log(error)
@@ -66,8 +68,9 @@ const SingleReview = ({ productId, review, getReviews }) => {
   }
 
   useEffect(() => {
-    setReviews(getReviews())
-  }, [productId])
+    //setReviews(getReviews())
+    getReviews()
+  }, [])
   // useEffect(() => {
   //   getReviews().then((review) => {
   //     //console.log(review)
@@ -93,7 +96,7 @@ const SingleReview = ({ productId, review, getReviews }) => {
                   e.preventDefault()
                   console.log(review._id)
                   deleteReviews(review._id)
-                  getReviews().then((reviews) => setReviews(reviews))
+                  //getReviews()
                 }}></i>
             </span>
             <Modal show={show} onHide={handleClose}>
