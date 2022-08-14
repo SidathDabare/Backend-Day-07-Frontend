@@ -12,18 +12,18 @@ const HomePage = () => {
     try {
       let res = await fetch(url)
       let data = await res.json()
-      console.log(data.products)
-      return data.products
-      //setProducts(data.products)
+      // console.log(data.products)
+      // return data.products
+      setProducts(data.products)
     } catch (error) {
       console.log(error)
     }
   }
   useEffect(() => {
-    //getProducts()
-    getProducts().then((product) => {
-      setProducts(product)
-    })
+    getProducts()
+    // getProducts().then((product) => {
+    //   setProducts(product)
+    // })
 
     //console.log(posts)
   }, [])

@@ -94,7 +94,7 @@ const MyNavbar = ({ setProducts }) => {
   }
 
   useEffect(() => {
-    setProducts()
+    //setProducts()
     //console.log(file.path)
   }, [])
   return (

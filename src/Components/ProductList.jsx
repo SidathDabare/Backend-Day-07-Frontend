@@ -5,10 +5,10 @@ import SingleProduct from "./SingleProduct"
 import Container from "react-bootstrap/Container"
 
 const ProductList = ({ products }) => {
-  const [items, setItems] = useState([])
-  console.log(items)
+  const [items, setItems] = useState(null)
+  //console.log(items)
 
-  console.log(products)
+  //console.log(products)
   // const getProducts = async () => {
   //   let url = `${process.env.REACT_APP_URL}/products`
   //   try {
@@ -30,18 +30,16 @@ const ProductList = ({ products }) => {
   //   //console.log(posts)
   // }, [])
   useEffect(() => {
-    //setItems(products)
-    //console.log(products)
-  }, [products])
+    setItems(products)
+    console.log(items)
+  }, [products, items])
 
   return (
     <Container
       className='d-flex flex-wrap justify-content-between'
       style={{ marginTop: "5rem" }}>
-      {products ? (
-        products.map((product, i) => (
-          <SingleProduct key={i} product={product} />
-        ))
+      {items ? (
+        items.map((product, i) => <SingleProduct key={i} product={product} />)
       ) : (
         <h4>Loading.....</h4>
       )}
