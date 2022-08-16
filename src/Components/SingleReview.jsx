@@ -144,6 +144,7 @@ const SingleReview = ({ productId, review, setUpdateReviews }) => {
                     console.log(review._id)
                     editReviews(review._id)
                     getReviews()
+                    setUpdateReviews()
                     handleClose()
                   }}>
                   Save Changes

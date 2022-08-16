@@ -1,7 +1,7 @@
 /** @format */
 
 import React, { useState } from "react"
-import { Link } from "react-router-dom"
+import { Link, useNavigate } from "react-router-dom"
 import Container from "react-bootstrap/Container"
 import Button from "react-bootstrap/Button"
 import Modal from "react-bootstrap/Modal"
@@ -11,6 +11,8 @@ import Navbar from "react-bootstrap/Navbar"
 import { useEffect } from "react"
 
 const MyNavbar = ({ setProducts }) => {
+  const navigate = useNavigate()
+
   const [show, setShow] = useState(false)
   const [name, setName] = useState("")
   const [brand, setBrand] = useState("")
@@ -21,9 +23,23 @@ const MyNavbar = ({ setProducts }) => {
   const [price, setPrice] = useState("")
   const [category, setCategory] = useState("")
   const [description, setDescription] = useState("")
+  const [cartItems, setCartItems] = useState({})
+  //console.log(cartItems)
 
   const handleClose = () => setShow(false)
   const handleShow = () => setShow(true)
+
+  const getCartItems = async () => {
+    try {
+      let res = await fetch(
+        `${process.env.REACT_APP_URL}/users/62f284a518f3387e1d9efc6d/cart`
+      )
+      let data = await res.json()
+      setCartItems(data[0])
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   const addProduct = async () => {
     let url = `${process.env.REACT_APP_URL}/products/`
@@ -92,8 +108,8 @@ const MyNavbar = ({ setProducts }) => {
   }
 
   useEffect(() => {
+    getCartItems()
     //setProducts()
-    //console.log(file.path)
   }, [])
   return (
     <Navbar bg='dark fixed-top' variant='dark'>
@@ -102,9 +118,39 @@ const MyNavbar = ({ setProducts }) => {
           <Link to='/'>Shop</Link>
         </h2>
 
-        <Button variant='primary' onClick={handleShow}>
-          + Add New Product
-        </Button>
+        <div>
+          <Button
+            variant='warning'
+            className='mx-2 px-4'
+            onClick={() => {
+              navigate(`/cart/${cartItems.owner}`)
+            }}>
+            <span>Cart </span>
+            <span
+              style={{
+                height: "15px",
+                width: "15px",
+                backgroundColor: "red",
+                padding: "0px 4px 0px 4px",
+                borderRadius: "50%",
+                color: "white",
+                fontSize: "10px",
+                marginTop: "-4px",
+                position: "absolute",
+              }}>
+              {cartItems &&
+              cartItems.products &&
+              cartItems.products.length > 0 ? (
+                cartItems.products.length
+              ) : (
+                <p>0</p>
+              )}
+            </span>
+          </Button>
+          <Button variant='primary' onClick={handleShow}>
+            + Add New Product
+          </Button>
+        </div>
       </Container>
       <Modal
         show={show}

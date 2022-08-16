@@ -9,15 +9,52 @@ import { useEffect } from "react"
 
 const SingleProduct = ({ product }) => {
   const [productItem, setProductItem] = useState({})
-  //console.log(product._id)
+  const [cartItems, setCartItems] = useState(null)
+  //console.log(productItem._id)
   const navigate = useNavigate()
+
+  const addProductToCart = async () => {
+    const url = `${process.env.REACT_APP_URL}/users/62f284a518f3387e1d9efc6d/cart`
+    try {
+      let res = await fetch(url, {
+        method: "POST",
+        body: JSON.stringify({
+          product_Id: productItem._id,
+          quantity: 1,
+        }),
+        headers: {
+          "Content-Type": "application/json",
+        },
+      })
+      getCartItems()
+      let data = await res.json()
+
+      return data
+    } catch (error) {
+      console.log(error)
+    }
+  }
+  const getCartItems = async () => {
+    try {
+      let res = await fetch(
+        `${process.env.REACT_APP_URL}/users/62f284a518f3387e1d9efc6d/cart`
+      )
+      let data = await res.json()
+      //console.log(data)
+      setCartItems(data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   useEffect(() => {
     setProductItem(product)
-  }, [product])
+    //getCartItems()
+  }, [product, cartItems])
   return (
-    <Card style={{ width: "18rem", height: "35rem", marginBottom: "2rem" }}>
+    <Card style={{ width: "18rem", height: "30rem", marginBottom: "2rem" }}>
       <Card.Img
+        style={{ width: "18rem", height: "10rem" }}
         variant='top'
         className='product-details-img pt-3'
         src={productItem.imageUrl}
@@ -31,20 +68,26 @@ const SingleProduct = ({ product }) => {
         <Card.Text
           style={{
             width: "100%",
-            height: "7rem",
+            height: "5.7rem",
             overflow: "hidden",
             textOverflow: "clip",
           }}>
           {productItem.description}
         </Card.Text>
         <h3>$ {productItem.price}</h3>
-        <Button
-          onClick={() => {
-            navigate(`/details/${productItem._id}`)
-          }}
-          variant='primary'>
-          Product Details
-        </Button>
+        <div className='d-flex justify-content-between'>
+          <Button
+            onClick={() => {
+              navigate(`/details/${productItem._id}`)
+            }}
+            variant='primary'>
+            Product Details
+          </Button>
+          <Button onClick={() => addProductToCart()} variant='success'>
+            Add to Cart
+          </Button>
+        </div>
+
         {/* <Link to={`/details/${productItem.id}`}>More Details</Link> */}
       </Card.Body>
     </Card>
