@@ -53,10 +53,6 @@ const MyNavbar = ({ setProducts }) => {
           name: name,
           brand: brand,
           imageUrl: imagePath.url,
-          // imageUrl:
-          //   type === "url"
-          //     ? file
-          //     : `${process.env.REACT_APP_URL}/file/cloudinary/${file.name}`,
           price: price,
           category: category,
           description: description,
